@@ -1,0 +1,39 @@
+---
+layout: post
+title: 'JHipster: A few recommended settings for those who want to experiment with
+  it'
+date: 2014-09-22 18:28:23.000000000 -04:00
+categories:
+- software
+tags:
+- hazelcast
+- java
+- jhipster
+- maven
+status: publish
+type: post
+published: true
+meta:
+  _publicize_pending: '1'
+  _edit_last: '9432974'
+  original_post_id: '42'
+  _wp_old_slug: '42'
+author:
+  login: willmitchell777
+  email: will.mitchell@gmail.com
+  display_name: Will Mitchell
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>If you are a Java developer considering doing some experiments with <a title="JHipster" href="http://jhipster.github.io/" target="_blank">JHipster</a>, here are a couple options that you might consider when generating your first project:</p>
+<ul>
+<li>Use Maven, at least initially. Maven seems to be better supported within the JHipster developer community, and the static analysis support you get from IDE's like Intellij Idea is quite good.</li>
+<li>Avoid OAauth (use Session cookies) if you just want to kick the tires on JHipster. There are currently a couple JHipster bugs/enhancements related to OAuth that will slow down your experimentation.</li>
+<li>Skip the caching support unless you are looking for a configuration adventure.  I look forward to re-evaluating JHipster/Hazelcast in the coming months, because Hazelcast is rather awesome in its own right.</li>
+<li>Another recommended choice for Idea users: Go with Grunt instead of Gulp.  Gulp is newer and more readable/concise but Idea has built-in support for Gruntfiles.</li>
+</ul>
+<p>Hope this helps some people have an enjoyable first experience with JHipster.</p>
+<p>&nbsp;</p>
+<p id="ICOMtiR"><img class="aligncenter wp-image-45 size-full" src="assets/img_542069bf4f288.png" alt="" width="826" height="612" /></p>

@@ -1,0 +1,57 @@
+---
+layout: post
+title: JHipster and JOOQ?  Access your pre-existing SQL model from your fancy JHipster
+  app.
+date: 2015-03-06 13:16:43.000000000 -05:00
+categories:
+- software
+tags:
+- angularjs
+- jhipster
+- jooq
+status: publish
+type: post
+published: true
+meta:
+  _wpas_skip_facebook: '1'
+  _wpas_skip_twitter: '1'
+  _wpas_skip_tumblr: '1'
+  _wpas_skip_path: '1'
+  _publicize_pending: '1'
+  publicize_google_plus_url: https://plus.google.com/116033957538680948183/posts/TQ1hKdLVYrS
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  _wpas_done_9231635: '1'
+  _publicize_done_external: a:1:{s:11:"google_plus";a:1:{s:21:"116033957538680948183";b:1;}}
+  _wpas_linkedin_publicize_failure: O:13:"Keyring_Error":2:{s:16:"
+  publicize_linkedin_url: ''
+  _thumbnail_id: '96'
+author:
+  login: willmitchell777
+  email: will.mitchell@gmail.com
+  display_name: Will Mitchell
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>Inquiring developers in the Java space are looking into <a title="JHipster" href="http://jhipster.github.io/" target="_blank">JHipster</a> because it combines a great <a title="AngularJS" href="https://angularjs.org/" target="_blank">Angular</a> / <a title="Bootstrap" href="http://getbootstrap.com/" target="_blank">Bootstrap</a> UI with the awesome and deep <a title="Spring Boot" href="http://projects.spring.io/spring-boot/" target="_blank">Spring Boot</a>.</p>
+<p>JHipster is particularly attractive if you are working on a greenfield project.  As you may know, JHipster workflow revolves around <a title="Yeoman" href="http://yeoman.io/" target="_blank">Yeoman</a> generators; you use generators to create "entities", generally.  Each time you do this, you get a new JPA entity and some associated Angular code / HTML to support CRUD ops.  As I said, this is great for new projects where you are creating the model on the fly.</p>
+<p><strong>But what if you have an existing model?</strong>  Is reverse engineering JPA models really the answer?  Not in my opinion...</p>
+<p>[caption id="attachment_96" align="aligncenter" width="336"]<a href="https://app3blog2.files.wordpress.com/2015/03/screen-shot-2015-03-06-at-1-31-26-pm.png"><img class=" wp-image-96" src="assets/screen-shot-2015-03-06-at-1-31-26-pm.png" alt="A relational model that you could want typesafe access to -- from within JHipster" width="336" height="444" /></a> A view of a relational model from within IntelliJ.  Intellij / Java / SQL tooling is excellent.[/caption]</p>
+<p>Have you heard of <a title="JOOQ" href="http://www.jooq.org/" target="_blank">JOOQ</a>?  It is the database access library that Java has needed for a long, long time.  I am not saying that Hibernate and JPA are bad--I am just saying that you don't have to use them for everything.  I think of JPA as a mapping facility that makes it easy to do certain CRUD ops.</p>
+<p>But, as the prolific <a title="Lukas Eder" href="https://twitter.com/lukaseder" target="_blank">Lukas Eder</a> has said, "JPA is not a replacement for SQL".</p>
+<p>JOOQ takes a completely different approach to Java database access: It is a "database first" approach.  With JOOQ, you generate data access code directly from your database, using a Maven plugin that you roll into your JHipster build.</p>
+<p>The JOOQ code generator creates Java classes that effectively <em>bring SQL semantics into your Java code.  </em>The generated code makes it possible to do complex queries in Java, in a way that is strikingly similar to pure SQL, yet the Java code is typesafe.  This blew my mind when I finally figured out how it works.</p>
+<p><strong>So, can we use JHipster to access our pre-existing giant corporate SQL data model?</strong></p>
+<p>Yes.  You need to use a JOOQ code generator to generate a bunch of static classes from your DB model.  For JHipster, you also need some Spring beans that make it easy to get at the JOOQ-generated code from within your services and/or controllers. <strong>I have written a JOOQ code generator that does this for you</strong>.</p>
+<p>The <a title="jooq-jhipster-generator" href="https://github.com/willmitchell/jooq-jhipster-generator" target="_blank">jooq-jhipster-generator</a> depends on JOOQ's existing JavaGenerator -- it just <strong>adds the Spring-specific stuff</strong>.  The jooq-jhipster-generator has been published to Maven Central, so <em>you are not required (but you can) to download/build</em> the generator itself.  The code is on <a title="Maven Central" href="http://search.maven.org/#artifactdetails%7Ccom.app3%7Cjooq-jhipster-generator%7C0.2-RELEASE%7Cjar" target="_blank">Maven Central</a>, so you can just use it directly in your pom.xml.</p>
+<p>In order to use <a title="jooq-jhipster-generator" href="https://github.com/willmitchell/jooq-jhipster-generator" target="_blank">jooq-jhipster-generator</a> with JHipster, you need to follow the instructions on <a title="Github" href="https://github.com/willmitchell/jooq-jhipster-generator" target="_blank">Github</a> and then integrate your model into the existing JHipster/Liquibase workflow.  In my case, what I did was to write a giant SQL model (such a joy compared to JPA).  My SQL model extends the existing JHipster JPA model--so the two can live together just fine.</p>
+<p>Once you have this in place, you can now build REST services that have direct access to the full relational model.</p>
+<p>One cost of using this approach is that you need to be deliberate about where (or when) you incorporate your external (SQL) model into the JHipster/Liquibase workflow.</p>
+<p>Known issues/limitations:</p>
+<ul>
+<li>Your Liquibase migrations may depend on classpath resources -- if your build fails, try <strong>mvn resources:resources</strong> in order to make Liquibase see the various config files.</li>
+<li>There is currently no automatic UI code generation associated with this facility.  You need to make your own client-side code.</li>
+</ul>
+<p>Any feedback on this approach/toolkit would be welcomed.</p>

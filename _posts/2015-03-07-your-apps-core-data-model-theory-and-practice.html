@@ -1,0 +1,62 @@
+---
+layout: post
+title: 'Your App''s Core Data Model: Theory and Practice'
+date: 2015-03-07 10:20:27.000000000 -05:00
+categories:
+- software
+tags:
+- java
+- springboot
+- sql
+- uml
+status: publish
+type: post
+published: true
+meta:
+  _edit_last: '9432974'
+  geo_public: '0'
+  _wpas_skip_facebook: '1'
+  _wpas_skip_tumblr: '1'
+  _wpas_skip_path: '1'
+  _thumbnail_id: '104'
+  _publicize_pending: '1'
+  publicize_twitter_url: http://t.co/y3SGadd3Az
+  _rest_api_published: '1'
+  _rest_api_client_id: "-1"
+  publicize_google_plus_url: https://plus.google.com/116033957538680948183/posts/HoNE6U9z2we
+  _wpas_done_9231635: '1'
+  _publicize_done_external: a:1:{s:11:"google_plus";a:1:{s:21:"116033957538680948183";b:1;}}
+  publicize_twitter_user: WillMitchell777
+  _wpas_done_10601407: '1'
+  _wpas_linkedin_publicize_failure: O:13:"Keyring_Error":2:{s:16:"
+  publicize_linkedin_url: ''
+  _oembed_cf43fc19ea7fbf097e2071baf68196fb: "{{unknown}}"
+author:
+  login: willmitchell777
+  email: will.mitchell@gmail.com
+  display_name: Will Mitchell
+  first_name: ''
+  last_name: ''
+excerpt: !ruby/object:Hpricot::Doc
+  options: {}
+---
+<p>After <a title="JOOQ post" href="http://app3.com/2015/03/06/jhipster-and-jooq-oh-yeah/" target="_blank">yesterday's post about JOOQ</a>, I wanted to return to the idea of how we go about creating our core data models in the real world.</p>
+<p>I like UML modeling because it helps you to communicate design ideas.  I must immediately qualify this by saying that I have always found so called "round-trip" modeling to be pure folly.  I use models (class diagrams, use case diagrams, deployment diagrams) to communicate ideas and then I let the diagrams go; it is counterproductive to try to use UML diagrams as a kind of policy enforcement tool.</p>
+<p>So, UML is all about theory, in my view.</p>
+<p>I used to use MagicDraw UML, but recently I switched to <a title="GenMyModel" href="http://genmymodel.com/" target="_blank">GenMyModel</a> because it is simple to use and it is far more cost effective.  Plus, GenMyModel has some useful code generation features.  For the record, <strong>I have no relationship with any vendors mentioned here</strong>.</p>
+<p>[caption id="attachment_104" align="aligncenter" width="300"]<a href="https://app3blog2.files.wordpress.com/2015/03/screen-shot-2015-03-07-at-8-41-39-am.png"><img class="size-medium wp-image-104" src="assets/screen-shot-2015-03-07-at-8-41-39-am.png" alt="A too-simple access control model in UML. " width="300" height="90" /></a> A too-simple access control model in UML.[/caption]</p>
+<p>The image above shows a too-simple access control model.  The model itself is <a title="Model" href="http://repository.genmymodel.com/will.mitchell/simple-jpa-access-control-model/defaultDiagram/_QdOLAsTNEeSII650IQ0Z1w" target="_blank">publicly visible on GenMyModel</a>, and the generated code is on <a title="Github" href="https://github.com/willmitchell/simple-jpa-access-control-model.git" target="_blank">Github</a>.  Feel free to explore them and star, etc as you feel appropriate.  GenMyModel lets you save your model straight to Github (shown below) repo, or you can download a Zipfile.</p>
+<p><a href="https://app3blog2.files.wordpress.com/2015/03/screen-shot-2015-03-07-at-9-35-48-am.png"><img class=" size-medium wp-image-111 aligncenter" src="assets/screen-shot-2015-03-07-at-9-35-48-am.png" alt="Screen Shot 2015-03-07 at 9.35.48 AM" width="211" height="300" /></a></p>
+<p>You can generate JPAs (along with a Maven build), or you can roll the dice and generate an entire Spring Data Rest implementation.  I decided to roll the dice and go with the REST API.  Once you download it, you can unpack the zip file and "mvn jetty:run" in the root folder.  Then open <a title="localhost" href="http://localhost:9090" target="_blank">localhost:9090</a> in your browser and you should see something like below.  Pretty cool, right?</p>
+<p><a href="https://app3blog2.files.wordpress.com/2015/03/screen-shot-2015-03-07-at-9-09-58-am.png"><img class=" size-medium wp-image-106 aligncenter" src="assets/screen-shot-2015-03-07-at-9-09-58-am.png" alt="Screen Shot 2015-03-07 at 9.09.58 AM" width="300" height="168" /></a>Another great thing is that you can open this project directly in your favorite tools.  I use Intellij.</p>
+<p><a href="https://app3blog2.files.wordpress.com/2015/03/screen-shot-2015-03-07-at-9-09-12-am.png"><img class=" size-medium wp-image-105 aligncenter" src="assets/screen-shot-2015-03-07-at-9-09-12-am.png" alt="Screen Shot 2015-03-07 at 9.09.12 AM" width="300" height="157" /></a></p>
+<p>So this was pretty easy, right?  But then working with simple models is always easy.  Any of the following approaches works fine for small scale work:</p>
+<ol>
+<li>Hand code JPAs and let your tools help you with schema generation, etc</li>
+<li>Use a diagramming tool and generate JPA or a full REST implementation (this post)</li>
+<li>Direct SQL (if you are using a relational database!)</li>
+</ol>
+<p>For larger apps in the real world, many in the Java space will argue that the <a title="JPA" href="http://projects.spring.io/spring-data-jpa/" target="_blank">current best practice is #1</a>.</p>
+<p>Today, we looked at #2.  Not bad.  Fun, even.  But would you do this for a model with 50 classes?  Would it scale?  I am not sure that I would have the patience for it.</p>
+<p>I will argue that, with the arrival of <a title="JOOQ" href="http://www.jooq.org/" target="_blank">JOOQ</a>, approach #3 is now the best way to work with large and complex relational models in Java land.</p>
+<p>To come back to the topic of this post: "Theory and Practice": I think that it will soon become clear to many Java developers that, #3, "database first" modeling is enormously powerful, especially if you can use your awesome Java IDE to help you write SQL queries via JOOQ that might take you weeks to figure out using approach #1.</p>
